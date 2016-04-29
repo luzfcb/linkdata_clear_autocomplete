@@ -15,3 +15,7 @@ class Document(models.Model):
 
     is_template = models.BooleanField(default=False)
     template_description = models.CharField(max_length=255, blank=True)
+    created_from = models.ForeignKey('self', null=True, on_delete=models.SET_NULL, editable=False)
+
+    class Meta:
+        ordering = ('document_type', )

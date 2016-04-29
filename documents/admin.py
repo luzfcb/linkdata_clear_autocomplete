@@ -13,3 +13,4 @@ class DocumentType(admin.ModelAdmin):
 @admin.register(Document)
 class Document(admin.ModelAdmin):
     list_display = ['content', 'document_type', 'is_template', 'template_description']
+    list_filter = ['is_template']

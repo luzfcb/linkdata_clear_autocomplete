@@ -19,5 +19,5 @@ from documents import documents_urls
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^', include(documents_urls)),
+    url(r'', include(documents_urls)),
 ]

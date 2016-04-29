@@ -1,4 +1,6 @@
 from dal import autocomplete
+from django.core.urlresolvers import reverse, reverse_lazy
+from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
 from django.views import generic
 from django.views.decorators.cache import never_cache
@@ -42,26 +44,33 @@ class DocumentCreateFromTemplateFormView(generic.FormView):
         document_template = form.cleaned_data['document_template']
 
         document_kwargs = {
-            'content': document_template.content,
+            'content': 'created from template "{}"'.format(document_template.content),
             'document_type': document_template.document_type,
             'is_template': False,
             'template_description': '',
+            'created_from': document_template
         }
 
         new_document = Document(**document_kwargs)
         new_document.save()
 
-
-class DocumentDetailView(generic.DetailView):
-    model = Document
-    template_name = 'document/detail.html'
+        return redirect(reverse('document-list'))
 
 
 class DocumentListView(generic.ListView):
     model = Document
     template_name = 'document/list.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(DocumentListView, self).get_context_data(**kwargs)
+        object_list = context.get('object_list', None)
+        context['object_list_is_template'] = object_list.filter(is_template=True)
+        context['object_list_not_is_template'] = object_list.filter(is_template=False)
+        return context
+
 
 class DocumentEditView(generic.UpdateView):
     model = Document
+    fields = '__all__'
     template_name = 'document/edit.html'
+    success_url = reverse_lazy('document-list')

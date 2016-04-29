@@ -1,5 +1,72 @@
 {% extends 'document/base.html' %}
 {% block content %}
+    <a href="{% url 'document-create' %}" class="btn btn-primary">Create new document from template</a>
 
+    <div>
+        <h3>Document created from templates:</h3>
+        {% if object_list_not_is_template %}
+
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>pk</th>
+                    <th>content</th>
+                    <th>document_type</th>
+                    <th>created_from</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for document in object_list_not_is_template %}
+                    <tr>
+                        <th>{{ document.pk }}</th>
+                        <td>{{ document.content }}</td>
+                        <td>{{ document.document_type }}</td>
+                        <td>pk: {{ document.created_from.pk }} - {{ document.created_from.template_description }}</td>
+                        <td>
+                            <div class="btn-group">
+                                <a href="{% url 'document-edit' pk=document.pk %}" class="btn btn-primary">edit</a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+    <div>
+        <h3>Document Templates:</h3>
+        {% if object_list_is_template %}
+
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>pk</th>
+                    <th>content</th>
+                    <th>document_type</th>
+                    <th>is_template</th>
+                    <th>template_description</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for document in object_list_is_template %}
+                    <tr>
+                        <td>{{ document.pk }}</td>
+                        <td>{{ document.content }}</td>
+                        <td>{{ document.document_type }}</td>
+                        <td>{{ document.is_template }}</td>
+                        <td>{{ document.template_description }}</td>
+                        <td>
+                            <div class="btn-group">
+                                <a href="{% url 'document-edit' pk=document.pk %}" class="btn btn-primary">edit</a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
 
 {% endblock content %}
