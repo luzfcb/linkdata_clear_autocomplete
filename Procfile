@@ -1,0 +1,1 @@
+web: gunicorn linkdata_clear_autocomplete.wsgi --log-file -
