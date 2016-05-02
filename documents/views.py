@@ -6,7 +6,7 @@ from django.views import generic
 from django.views.decorators.cache import never_cache
 
 from .models import Document
-from .forms import DocumentCreateFromTemplateForm
+from .forms import DocumentCreateFromTemplateForm, WidgetSamplesForm
 
 
 class DocumentCreateAutocompleteView(autocomplete.Select2QuerySetView):
@@ -18,7 +18,11 @@ class DocumentCreateAutocompleteView(autocomplete.Select2QuerySetView):
         # if not self.request.user.is_authenticated():
         #     return Document.objects.none()
 
-        document_type = self.forwarded.get('document_type', None)
+        document_type = (self.forwarded.get('document_type', None) or
+                         self.forwarded.get('document_type2', None) or
+                         self.forwarded.get('document_type3', None) or
+                         self.forwarded.get('document_type4', None)
+                         )
 
         qs = Document.objects.filter(is_template=True)
 
@@ -55,6 +59,10 @@ class DocumentCreateFromTemplateFormView(generic.FormView):
         new_document.save()
 
         return redirect(reverse('document-list'))
+
+
+class WidgetSamplePageView(DocumentCreateFromTemplateFormView):
+    form_class = WidgetSamplesForm
 
 
 class DocumentListView(generic.ListView):

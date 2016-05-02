@@ -1,7 +1,9 @@
 {% extends 'document/base.html' %}
 {% block content %}
-    <a href="{% url 'document-create' %}" class="btn btn-primary">Create new document from template</a>
-
+    <div>
+        <a href="{% url 'document-create' %}" class="btn btn-primary">Create new document from template</a>
+        <a href="{% url 'document-create-widget-samples' %}" class="btn btn-primary">Widget Samples</a>
+    </div>
     <div>
         <h3>Document created from templates:</h3>
         {% if object_list_not_is_template %}
